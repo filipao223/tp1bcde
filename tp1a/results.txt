@@ -1,0 +1,244 @@
+PROCURA EXAUSTIVA|MELHORADA
+DISTANCIA MINIMA
+TEMPOS EM SEGUNDOS
+
+-----------------------------------
+NUMERO PONTOS = 4000
+PROCURA EXAUSTIVA
+real 0.40
+user 0.25
+sys 0.01
+13.928
+PROCURA MELHORADA
+real 0.08
+user 0.03
+sys 0.01
+13.928
+-----------------------------------
+NUMERO PONTOS = 5000
+PROCURA EXAUSTIVA
+real 0.45
+user 0.37
+sys 0.00
+23.087
+PROCURA MELHORADA
+real 0.08
+user 0.04
+sys 0.01
+23.087
+-----------------------------------
+NUMERO PONTOS = 6000
+PROCURA EXAUSTIVA
+real 0.61
+user 0.54
+sys 0.00
+7.280
+PROCURA MELHORADA
+real 0.28
+user 0.06
+sys 0.00
+7.280
+-----------------------------------
+NUMERO PONTOS = 7000
+PROCURA EXAUSTIVA
+4.243
+real 0.92
+user 0.76
+sys 0.00
+PROCURA MELHORADA
+real 0.10
+user 0.04
+sys 0.01
+4.243
+-----------------------------------
+NUMERO PONTOS = 8000
+PROCURA EXAUSTIVA
+real 1.04
+user 0.98
+sys 0.00
+7.616
+PROCURA MELHORADA
+real 0.11
+user 0.07
+sys 0.00
+7.616
+-----------------------------------
+NUMERO PONTOS = 9000
+PROCURA EXAUSTIVA
+5.000
+real 1.43
+user 1.26
+sys 0.00
+PROCURA MELHORADA
+real 0.16
+user 0.10
+sys 0.00
+5.000
+-----------------------------------
+NUMERO PONTOS = 10000
+PROCURA EXAUSTIVA
+real 1.58
+user 1.54
+sys 0.00
+5.099
+PROCURA MELHORADA
+5.099
+real 0.23
+user 0.15
+sys 0.00
+-----------------------------------
+NUMERO PONTOS = 11000
+PROCURA EXAUSTIVA
+real 1.94
+user 1.82
+sys 0.00
+3.162
+PROCURA MELHORADA
+real 0.22
+user 0.18
+sys 0.01
+3.162
+-----------------------------------
+NUMERO PONTOS = 12000
+PROCURA EXAUSTIVA
+real 2.21
+user 2.15
+sys 0.00
+9.220
+PROCURA MELHORADA
+real 0.35
+user 0.25
+sys 0.01
+9.220
+-----------------------------------
+NUMERO PONTOS = 13000
+PROCURA EXAUSTIVA
+real 2.60
+user 2.56
+sys 0.01
+4.472
+PROCURA MELHORADA
+real 0.34
+user 0.28
+sys 0.01
+4.472
+-----------------------------------
+NUMERO PONTOS = 14000
+PROCURA EXAUSTIVA
+real 2.98
+user 2.92
+sys 0.00
+6.708
+PROCURA MELHORADA
+real 0.40
+user 0.34
+sys 0.00
+12.207
+-----------------------------------
+NUMERO PONTOS = 15000
+PROCURA EXAUSTIVA
+real 3.40
+user 3.35
+sys 0.00
+5.099
+PROCURA MELHORADA
+real 0.46
+user 0.40
+sys 0.01
+5.099
+-----------------------------------
+NUMERO PONTOS = 16000
+PROCURA EXAUSTIVA
+real 3.84
+user 3.81
+sys 0.01
+3.606
+PROCURA MELHORADA
+real 0.54
+user 0.46
+sys 0.01
+3.606
+-----------------------------------
+NUMERO PONTOS = 17000
+PROCURA EXAUSTIVA
+real 4.36
+user 4.31
+sys 0.01
+6.083
+PROCURA MELHORADA
+real 0.63
+user 0.56
+sys 0.03
+6.083
+-----------------------------------
+NUMERO PONTOS = 18000
+PROCURA EXAUSTIVA
+real 4.85
+user 4.79
+sys 0.01
+3.000
+PROCURA MELHORADA
+real 0.69
+user 0.65
+sys 0.00
+3.000
+-----------------------------------
+NUMERO PONTOS = 19000
+PROCURA EXAUSTIVA
+real 5.45
+user 5.35
+sys 0.00
+2.236
+PROCURA MELHORADA
+real 0.82
+user 0.76
+sys 0.01
+2.236
+-----------------------------------
+NUMERO PONTOS = 20000
+PROCURA EXAUSTIVA
+real 6.07
+user 5.96
+sys 0.00
+3.000
+PROCURA MELHORADA
+real 0.89
+user 0.84
+sys 0.00
+3.000
+-----------------------------------
+NUMERO PONTOS = 21000
+PROCURA EXAUSTIVA
+real 6.65
+user 6.59
+sys 0.00
+3.606
+PROCURA MELHORADA
+3.606
+real 1.06
+user 0.93
+sys 0.04
+-----------------------------------
+NUMERO PONTOS = 22000
+PROCURA EXAUSTIVA
+real 7.44
+user 7.26
+sys 0.01
+6.708
+PROCURA MELHORADA
+real 1.19
+user 1.12
+sys 0.00
+6.708
+-----------------------------------
+NUMERO PONTOS = 23000
+PROCURA EXAUSTIVA
+real 8.17
+user 8.06
+sys 0.00
+1.414
+PROCURA MELHORADA
+real 1.30
+user 1.25
+sys 0.00
+1.414

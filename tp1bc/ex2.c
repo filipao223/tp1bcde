@@ -3,6 +3,7 @@
 #include <string.h>
 #include <limits.h>
 #include <errno.h>
+#include <math.h>
 
 #define MAX_STR 16
 #define MAX_TEMP 1024

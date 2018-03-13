@@ -15,6 +15,7 @@ void addBST(Node*, char*, int);
 Node* getBST(Node*, char*);
 Node* removeBST(Node*, char*);
 void printBST(Node*);
+void printTree(Node*, int);
 long long valueOf(char*);
 
 int main(int argc, char** argv){

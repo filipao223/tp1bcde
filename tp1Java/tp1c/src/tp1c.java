@@ -45,7 +45,7 @@ class Node {
         if(right!=null) {
             right.toString(new StringBuilder().append(prefix).append(isTail ? "│   " : "    "), false, sb);
         }
-        sb.append(prefix).append(isTail ? "└── " : "┌── ").append(cartao).append("\n");
+        sb.append(prefix).append(isTail ? "└── " : "┌── ").append(cartao + " " + (red?"r":"b")).append("\n");
         if(left!=null) {
             left.toString(new StringBuilder().append(prefix).append(isTail ? "    " : "│   "), true, sb);
         }
@@ -58,7 +58,18 @@ class Node {
     }
 }
 
+//Objecto devolvido pelos metodos add e remove, para devolver 2 nodes de uma vez
+//a raiz da arvore, e o novo node
 
+class ReturnObj{
+    Node newNode;
+    Node rootNode;
+
+    public ReturnObj(Node newNode, Node rootNode){
+        this.newNode = newNode;
+        this.rootNode = rootNode;
+    }
+}
 
 // classe que representa árvore binária. Implementacao hard-coded para o problema.
 
@@ -98,31 +109,42 @@ class BST {
     }
 
     // adiciona novo nó à árvore. Se já existe atualiza valor acumulado
-    public void add(String cartao, int saldo) {
-        root = add(cartao, saldo, root);
-        return;
+    public BST add(BST tree,String cartao, int saldo) {
+        ReturnObj returnObj = add(cartao, saldo, root);
+        if(returnObj.newNode == null) return tree;
+        tree.root = returnObj.rootNode==null ? returnObj.newNode : returnObj.rootNode;
+        addFix(tree, returnObj.newNode);
+        return tree;
     }
 
-    protected Node add(String cartao, int valor, Node node) {
+    protected ReturnObj add(String cartao, int valor, Node node) {
         // contribuinte ainda nao existe, cria novo contribuinte.
+        ReturnObj returnObj = null;
         if (node == null) {
-            return new Node (cartao, valor);
+            Node newNode =  new Node (cartao, valor);
+            returnObj = new ReturnObj(newNode, null);
+            return returnObj;
         }
 
         // contribuinte já existe, adiciona a valor acumulado
         if (node.compareTo(cartao) == 0) {
             node.saldo += valor;
+            returnObj.newNode = null;
             // ainda nao encontrou. desce mais um nível
         } else {
             if (node.compareTo(cartao) > 0) {
-                node.left = add(cartao, valor, node.left);
+                returnObj = add(cartao, valor, node.left);
+                node.left = node.left==null?returnObj.newNode:node.left;
                 node.left.parent = node;
+                returnObj.rootNode = node;
             } else {
-                node.right = add(cartao, valor, node.right);
+                returnObj = add(cartao, valor, node.right);
+                node.right = node.right==null?returnObj.newNode:node.right;
                 node.right.parent = node;
+                returnObj.rootNode = node;
             }
         }
-        return node;
+        return returnObj;
     }
 
     // remove contribuinte da arvore
@@ -166,8 +188,6 @@ class BST {
         return ((no.right == null) ? no : getRightmost(no.right));
     }
 
-
-
     // imprime em ordem. para debugging e verificacao
     void printInOrder(){
         printInOrder(root);
@@ -181,12 +201,148 @@ class BST {
         printInOrder(no.right);
     }
 
-    public Node checkNode(BST tree, Node node){
-        while(node.parent.red){
-            if(node.parent == node.parent.parent.left){
-                
-            }
+
+
+    public Node addFix(BST tree, Node node){
+        if(node.parent == null){
+            node.red = false;
+            return null;
         }
+        else{
+            if(node.parent.parent != null){
+                //Verifica se tio é nulo|preto, ou vermelho
+                if(hasRedUncle(node)){ //tio vermelho
+                    node.parent.parent.red = node.parent.parent.red?false:true;
+                    node.parent.red = node.parent.red?false:true;
+                    recolorUncle(node);
+                    if(node.parent == null){
+                        tree.root = node;
+                        tree.root.red = false;
+                        return null;
+                    }
+                    else return addFix(tree, node.parent.parent);
+                }
+                else{ //tio preto
+                    if(checkRightChild(node.parent)){ //Pai é right child
+                        if(checkRightChild(node)){ //Filho é right child
+                            recolorParents(node);
+                            node = LeftRotation(node.parent.parent);
+                            node.parent = node.left.parent;
+                            if(node.parent != null){
+                                if(checkRightChild(node)) node.parent.right = node;
+                                else node.parent.left = node;
+                            }
+                            node.left.parent = node;
+                            node.right.parent = node;
+                            if(node.parent == null){
+                                tree.root = node;
+                                tree.root.red = false;
+                                return null;
+                            }
+                            else return addFix(tree, node.parent);
+                        }
+                        else{ //Filho é left child
+                            node = RightRotation(node.parent);
+                            recolorParents(node);
+                            node = LeftRotation(node.parent.parent);
+                            node.parent = node.left.parent;
+                            if(node.parent != null){
+                                if(checkRightChild(node)) node.parent.right = node;
+                                else node.parent.left = node;
+                            }
+                            node.left.parent = node;
+                            node.right.parent = node;
+                            if(node.parent == null){
+                                tree.root = node;
+                                tree.root.red = false;
+                                return null;
+                            }
+                            else return addFix(tree, node.parent);
+                        }
+                    }
+                    else{
+                        //Pai é left child
+                        if(checkRightChild(node)){ //filho é right child
+                            node = LeftRotation(node.parent);
+                            recolorParents(node);
+                            node = RightRotation(node.parent.parent);
+                            node.parent = node.right.parent;
+                            if(node.parent != null){
+                                if(checkRightChild(node)) node.parent.right = node;
+                                else node.parent.left = node;
+                            }
+                            node.left.parent = node;
+                            node.right.parent = node;
+                            if(node.parent == null){
+                                tree.root = node;
+                                tree.root.red = false;
+                                return null;
+                            }
+                            else return addFix(tree, node.parent);
+                        }
+                        else{ //filho é left child
+                            recolorParents(node);
+                            node = RightRotation(node.parent.parent);
+                            node.parent = node.right.parent;
+                            if(node.parent != null){
+                                if(checkRightChild(node)) node.parent.right = node;
+                                else node.parent.left = node;
+                            }
+                            node.left.parent = node;
+                            node.right.parent = node;
+                            if(node.parent == null){
+                                tree.root = node;
+                                tree.root.red = false;
+                                return null;
+                            }
+                            else return addFix(tree, node.parent);
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+    }
+
+    public Node LeftRotation(Node node){
+        Node temp = node.right;
+        node.right = temp.left;
+        temp.left = node;
+
+        return temp;
+    }
+
+    public Node RightRotation(Node node){
+        Node temp = node.left;
+        node.left = temp.right;
+        temp.right = node;
+
+        return temp;
+    }
+
+    public boolean hasRedUncle(Node node){
+        if(node.parent.parent.right == null) return false;
+        if(node.parent.parent.left == null) return false;
+        return true;
+    }
+
+    public void recolorUncle(Node node){
+        if(node.parent.parent.right != null){
+            node.parent.parent.right.red = node.parent.parent.right.red?false:true;
+        }
+        else if(node.parent.parent.left != null){
+            node.parent.parent.left.red = node.parent.parent.left.red?false:true;
+        }
+    }
+
+    public void recolorParents(Node node){
+        node.parent.red = node.parent.red?false:true;
+        node.parent.parent.red = node.parent.parent.red?false:true;
+    }
+
+    public boolean checkRightChild(Node node){
+        if(node == node.parent.right) return true;
+        return false;
     }
 }
 
@@ -210,7 +366,7 @@ public class tp1c{
             if (comando.equals("UPDATE")){
                 cartao = new String(st.nextToken());
                 valor = Integer.parseInt(st.nextToken());
-                tree.add (cartao, valor);
+                tree = tree.add(tree, cartao, valor);
             }
             else if (comando.equals("SALDO")){
                 cartao = new String(st.nextToken());
@@ -226,10 +382,9 @@ public class tp1c{
             }
             else if (comando.equals("IMPRIME")){
                 tree.printInOrder();
+                //System.out.println(tree.root);
             }
             else if (comando.equals("TERMINA")){
-                System.out.println("TEMPO: ");
-                System.out.println(System.currentTimeMillis() - startTime);
                 return;
             }
         } while (true);

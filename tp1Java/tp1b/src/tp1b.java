@@ -317,8 +317,6 @@ class tp1b{
                 //System.out.println(tree.root);
             }
             else if (comando.equals("TERMINA")){
-                System.out.print("\n\nTEMPO: ");
-                System.out.println(System.currentTimeMillis() - startTime);
                 return;
             }
         } while (true);

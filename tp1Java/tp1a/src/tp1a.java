@@ -196,8 +196,6 @@ public class tp1a{
                 tree.printInOrder();
             }
             else if (comando.equals("TERMINA")){
-                System.out.println("TEMPO: ");
-                System.out.println(System.currentTimeMillis() - startTime);
                 return;
             }
         } while (true);

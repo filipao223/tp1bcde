@@ -14,6 +14,7 @@ class Node {
     public Node next;
     public Node previous;
     public Node below;
+    public Node above;
 
     // Construtores
     Node(String cartao, int saldo) {
@@ -28,6 +29,8 @@ class Node {
         this.saldo = saldo;
         next = n;
         previous = p;
+        below = null;
+        above = null;
     }
 
     // Comparadores. Unico critério é a String cartao. Restantes campos são ignorados
@@ -50,7 +53,7 @@ class SkipListLevel{
         isEmpty = true;
     }
 
-    public Node add(String cartao, int saldo){
+    public Node add(String cartao, int saldo, Node below){
         Node prox = root;
 
         if(isEmpty){
@@ -59,7 +62,11 @@ class SkipListLevel{
             return root.next;
         }
         else{
-            for(current = root; prox!=null;){
+            //Checks if below node has an above node
+            if(below.previous.above != null){
+                //Nao tem, procura o mais perto que tenha
+            }
+            for(current = below==null?root:below.previous.above; prox!=null; current = prox){
                 System.out.println(root);
                 System.out.println(current);
                 prox = current.next;
@@ -76,7 +83,6 @@ class SkipListLevel{
                     prox.previous = current.next;
                     return current.next;
                 }
-                current = prox;
             }
             return null;
         }
@@ -84,10 +90,13 @@ class SkipListLevel{
 
     public Node get(String cartao, Node above){
         Node prox = root;
+        //System.out.println("Started at " + (above==null?root.cartao:above.cartao));
         for(current = above==null?root:above.below; prox!=null; current = prox){
             prox = current.next;
+            //System.out.println("atual" + current);
+            //System.out.println("Proximo" + prox);
             if(prox!=null){
-                if(current.compareTo(cartao) == 0 || prox==null || prox.compareTo(cartao)<0){
+                if(current.compareTo(cartao) == 0 || prox.compareTo(cartao)>0){
                     return current;
                 }
             }
@@ -126,6 +135,7 @@ class SkipList {
         levels = new SkipListLevel[maxLevel];
         for(int i=0; i<maxLevel; i++) levels[i] = new SkipListLevel();
         for(int i=maxLevel-1; i>0; i--) levels[i].root.below = levels[i-1].root;
+        for(int i=0; i<maxLevel-1; i++) levels[i].root.above = levels[i+1].root;
         isEmpty = true;
         randomGen = new Random(1);
     }
@@ -136,19 +146,24 @@ class SkipList {
         Node temp = null;
 
         while(i >= 0){
+            //System.out.println("Entered get in level " + i);
             temp = levels[i].get(cartao, temp);
+            //System.out.println(temp);
+            i-=1;
             if(temp==null) continue;
-            if(temp.compareTo(cartao) == 0) break;
+            //System.out.println("temp number is " + temp.cartao);
+            if(Objects.equals(cartao, temp.cartao)) return temp;
         }
 
-        return temp;
+        return null;
     }
 
     // adiciona novo nó à lista. Se já existe atualiza valor acumulado
     public void add(String cartao, int saldo) {
-        Node aboveNode = null;
         Node belowNode = null;
-        float num;
+        Node newNode;
+        Node oldestNodeWithAbove = null;
+        int num;
 
         //Coin flip
         int numberLevels = 1;
@@ -160,11 +175,19 @@ class SkipList {
 
         System.out.println("generated " + numberLevels + " levels");
 
-        for (int i = numberLevels-1; i >= 0; i--) {
-            if (aboveNode != null) aboveNode.below = belowNode;
-            belowNode = levels[i].add(cartao, saldo);
-            if (belowNode == null) break;
-            aboveNode = belowNode;
+        for (int i = 0; i < numberLevels; i++) {
+            System.out.println("Adding in level " + i);
+            System.out.print("Below node is " + (belowNode==null?belowNode:belowNode.cartao) + "and its previous is " + (belowNode==null?belowNode:belowNode.previous.cartao));
+            System.out.println(" and its above is " + (belowNode==null?belowNode:(belowNode.previous.above==null?"null":belowNode.previous.above.cartao)));
+            newNode = levels[i].add(cartao, saldo, belowNode);
+            //System.out.println("new node number is " + newNode.cartao);
+            if (newNode == null) break;
+            if(belowNode == null) belowNode = newNode;
+            else{
+                newNode.below = belowNode;
+                belowNode.above = newNode;
+                belowNode = newNode;
+            }
         }
     }
 
@@ -175,10 +198,6 @@ class SkipList {
 
     public void remove(String cartao){
 
-    }
-
-    protected Node remove(String cartao, Node no) {
-        return null;
     }
 
     // imprime em ordem. para debugging e verificacao

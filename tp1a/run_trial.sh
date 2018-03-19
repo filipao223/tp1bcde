@@ -17,7 +17,11 @@ fi
 COUNTER=0
 
 echo "PROCURA EXAUSTIVA|MELHORADA" > results.txt
+<<<<<<< HEAD
 echo "DISTANCIA MAIS PEQUENA" >> results.txt
+=======
+echo "DISTANCIA MINIMA" >> results.txt
+>>>>>>> e5a6b9723da6813e68aa864d6eaed68bf03da113
 echo "TEMPOS EM SEGUNDOS" >> results.txt
 echo "" >> results.txt
 

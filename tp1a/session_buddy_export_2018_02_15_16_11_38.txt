@@ -1,4 +1,10 @@
+<<<<<<< HEAD
 ﻿﻿Divide andconquer
 
    http://www.cs.ucsb.edu/~suri/cs235/ClosestPair.pdf
+=======
+﻿﻿Divide andconquer
+
+   http://www.cs.ucsb.edu/~suri/cs235/ClosestPair.pdf
+>>>>>>> e5a6b9723da6813e68aa864d6eaed68bf03da113
    https://www.geeksforgeeks.org/closest-pair-of-points/

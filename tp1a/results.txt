@@ -1,0 +1,64 @@
+PROCURA EXAUSTIVA|MELHORADA
+DISTANCIA MAIS PEQUENA
+TEMPOS EM SEGUNDOS
+
+-----------------------------------
+NUMERO PONTOS = 5000
+PROCURA EXAUSTIVA
+1113.740
+real 0.32
+user 0.32
+sys 0.00
+PROCURA MELHORADA
+1113.740
+real 0.06
+user 0.06
+sys 0.00
+-----------------------------------
+NUMERO PONTOS = 6000
+PROCURA EXAUSTIVA
+990.588
+real 0.46
+user 0.46
+sys 0.00
+PROCURA MELHORADA
+990.588
+real 0.09
+user 0.09
+sys 0.00
+-----------------------------------
+NUMERO PONTOS = 7000
+PROCURA EXAUSTIVA
+1844.139
+real 0.63
+user 0.62
+sys 0.00
+PROCURA MELHORADA
+1844.139
+real 0.12
+user 0.12
+sys 0.00
+-----------------------------------
+NUMERO PONTOS = 8000
+PROCURA EXAUSTIVA
+664.285
+real 0.82
+user 0.82
+sys 0.00
+PROCURA MELHORADA
+664.285
+real 0.17
+user 0.17
+sys 0.00
+-----------------------------------
+NUMERO PONTOS = 9000
+PROCURA EXAUSTIVA
+891.823
+real 1.04
+user 1.04
+sys 0.00
+PROCURA MELHORADA
+891.823
+real 0.21
+user 0.21
+sys 0.00

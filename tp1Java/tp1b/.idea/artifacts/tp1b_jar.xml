@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="tp1b:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/tp1b_jar</output-path>
+    <root id="archive" name="tp1b.jar">
+      <element id="module-output" name="tp1b" />
+    </root>
+  </artifact>
+</component>

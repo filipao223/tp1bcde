@@ -1,0 +1,41 @@
+RESULTADOS MOOSHAK
+2.000
+real 0.00
+user 0.00
+sys 0.00
+1.000
+real 0.00
+user 0.00
+sys 0.00
+0.000
+real 0.00
+user 0.00
+sys 0.00
+5.657
+real 0.00
+user 0.00
+sys 0.00
+0.000
+real 0.00
+user 0.00
+sys 0.00
+0.000
+real 0.00
+user 0.00
+sys 0.00
+1.000
+real 0.00
+user 0.00
+sys 0.00
+1.414
+real 0.00
+user 0.00
+sys 0.00
+57.871
+real 0.00
+user 0.00
+sys 0.00
+0.000
+real 0.28
+user 0.28
+sys 0.00

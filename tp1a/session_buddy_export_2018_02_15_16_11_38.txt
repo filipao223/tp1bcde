@@ -1,0 +1,4 @@
+﻿﻿Divide andconquer
+
+   http://www.cs.ucsb.edu/~suri/cs235/ClosestPair.pdf
+   https://www.geeksforgeeks.org/closest-pair-of-points/

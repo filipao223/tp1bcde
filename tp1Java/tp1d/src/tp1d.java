@@ -44,6 +44,7 @@ class ReturnObj{
         lastAccessedNode=null;
     }
 }
+/**/
 
 class SkipListLevel{
     public Node root;
@@ -174,7 +175,7 @@ class SkipList {
             i-=1;
             if(temp==null) continue;
             //System.out.println("temp number is " + temp.cartao);
-            if(Objects.equals(cartao, temp.cartao)) return temp;
+            if(temp.compareTo(cartao)==0) return temp;
         }
 
         return null;
@@ -238,7 +239,7 @@ class SkipList {
                 temp.above = null;
                 toRemove.below = null;
             }
-            if(Objects.equals(cartao, temp.cartao)){
+            if(temp.compareTo(cartao)==0){
                 temp.previous.next = temp.next;
                 if(temp.next != null) temp.next.previous = temp.previous;
                 toRemove = temp;

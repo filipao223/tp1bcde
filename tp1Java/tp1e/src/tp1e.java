@@ -36,6 +36,22 @@ class Node {
     int compareTo(Node otherNode) {
         return this.compareTo(otherNode.cartao);
     }
+
+    public StringBuilder toString(StringBuilder prefix, boolean isTail, StringBuilder sb) {
+        if(right!=null) {
+            right.toString(new StringBuilder().append(prefix).append(isTail ? "│   " : "    "), false, sb);
+        }
+        sb.append(prefix).append(isTail ? "└── " : "┌── ").append(cartao +" "+saldo).append("\n");
+        if(left!=null) {
+            left.toString(new StringBuilder().append(prefix).append(isTail ? "    " : "│   "), true, sb);
+        }
+        return sb;
+    }
+
+    @Override
+    public String toString() {
+        return this.toString(new StringBuilder(), true, new StringBuilder()).toString();
+    }
 }
 
 
@@ -61,46 +77,41 @@ class BST {
         root = new Node(cartao, saldo);
     }
 
-    // encontra determinado contribuinte na árvore (null se não encontrado)
-    public Node get(Node no) {
-        return this.get(no.cartao);
-    }
-
-    public Node get(String cartao) {
-        Node no = root;
-        while (no != null) {
-            if (no.compareTo(cartao) == 0) {
-                return no;
-            }
-            no = ((no.compareTo(cartao) > 0) ? no.left : no.right);
-        }
-        return null;
+    public Node get(Node root, String cartao) {
+        return splay(root, cartao);
     }
 
     // adiciona novo nó à árvore. Se já existe atualiza valor acumulado
-    public void add(String cartao, int saldo) {
-        root = add(cartao, saldo, root);
-        return;
-    }
 
-    protected Node add(String cartao, int valor, Node node) {
+    protected Node add(String cartao, int valor, Node root) {
         // contribuinte ainda nao existe, cria novo contribuinte.
-        if (node == null) {
+        if (root == null) {
             return new Node (cartao, valor);
         }
 
-        // contribuinte já existe, adiciona a valor acumulado
-        if (node.compareTo(cartao) == 0) {
-            node.saldo += valor;
-            // ainda nao encontrou. desce mais um nível
-        } else {
-            if (node.compareTo(cartao) > 0) {
-                node.left = add(cartao, valor, node.left);
-            } else {
-                node.right = add(cartao, valor, node.right);
-            }
+        Node newNode = null;
+
+        root = splay(root, cartao);
+
+        if(root.compareTo(cartao)==0){
+            root.saldo += valor;
         }
-        return node;
+        else if(root.compareTo(cartao) < 0){
+            newNode = new Node(cartao, valor);
+
+            newNode.left = root;
+            newNode.right = root.right;
+            root.right = null;
+        }
+        else{
+            newNode = new Node(cartao, valor);
+
+            newNode.right = root;
+            newNode.left = root.left;
+            root.left = null;
+        }
+
+        return newNode;
     }
 
     // remove contribuinte da arvore
@@ -157,62 +168,73 @@ class BST {
         printInOrder(no.right);
     }
 
-    public Node zig(Node node){
+    public Node RightRotation(Node node){
         Node temp = node.left;
         node.left = temp.right;
         temp.right = node;
         return temp;
     }
 
-    public Node zag(Node node){
+    public Node LeftRotation(Node node){
         Node temp = node.right;
         node.right = temp.left;
         temp.left = node;
         return temp;
     }
 
-    public Node ZigZig(Node node){
-        Node temp = zig(node);
-        temp = zig(temp);
-        return temp;
-    }
+    public Node splay(Node root,String cartao){
 
-    public Node ZagZag(Node node){
-        Node temp = zag(node);
-        temp = zag(temp);
-        return temp;
-    }
+        if(root == null || root.compareTo(cartao)==0) return root;
 
-    public Node ZigZag(Node node){
-        Node temp = zag(node);
-        temp = zig(temp);
-        return temp;
-    }
+        if(root.compareTo(cartao) > 0){ //Chave é menor
+            if(root.left == null) return root; //Nao existe
 
-    public Node ZagZig(Node node){
-        Node temp = zig(node);
-        temp = zag(temp);
-        return temp;
-    }
+            if(root.left.compareTo(cartao) > 0){
+                if(root.left.left != null){
+                    root.left.left = splay(root.left.left, cartao);
+                    root = RightRotation(root);
+                }
+            }
+            else if(root.left.compareTo(cartao) < 0){
+                if(root.left.right != null){
+                    root.left.right = splay(root.left.right, cartao);
+                    root.left = LeftRotation(root.left);
+                }
+            }
+            else{
+                //Node já existe
+                return RightRotation(root);
+            }
 
-    public Node splay(Node root, Node node){
-        if(root == node || root == node){ //Node is root
-            return root;
+            return RightRotation(root);
         }
+        else{
+            if(root.right == null) return root;
 
-        if(root.left == node) return zig(node); //Node is left child of root
-        if(root.right == node) return zag(node); //Node ir right child of root
+            if(root.right.compareTo(cartao) < 0){
+                if(root.right.right != null){
+                    root.right.right = splay(root.right.right, cartao);
+                    root = LeftRotation(root);
+                }
+            }
+            else if(root.right.compareTo(cartao) > 0){
+                if(root.right.left != null){
+                    root.right.left = splay(root.right.left, cartao);
+                    root.right = RightRotation(root.right);
+                }
+            }
+            else{
+                //Node já existe
+                return LeftRotation(root);
+            }
 
-        if(root.left != null && root.left.left == node) return ZigZig(node); //Node is left child of parent and parent is left child
-        if(root.right != null && root.right.right == node) return ZagZag(node); //Node is right child of parent and parent is right child
-
-        if(root.left != null && root.left.right == node) return ZagZig(node); //Node is right child of parent and parent is left child
-        if(root.right != null && root.right.left == node) return ZigZag(node); //Node is left child of parent and parent is right child
+            return LeftRotation(root);
+        }
     }
 }
 
 
-public class tp1d{
+public class tp1e{
 
     public static void main(String[] arguments) {
 
@@ -231,15 +253,19 @@ public class tp1d{
             if (comando.equals("UPDATE")){
                 cartao = new String(st.nextToken());
                 valor = Integer.parseInt(st.nextToken());
-                tree.add (cartao, valor);
+                tree.root = tree.add (cartao, valor, tree.root);
             }
             else if (comando.equals("SALDO")){
                 cartao = new String(st.nextToken());
-                Node no = tree.get(cartao);
-                if (no==null)
+                if(tree==null || tree.root==null){
                     System.out.println(cartao + " INEXISTENTE");
+                }
+                Node oldRoot = tree.root;
+                tree.root = tree.get(tree.root, cartao);
+                if(oldRoot!=tree.root || tree.root.compareTo(cartao)==0)
+                    System.out.println(cartao + " SALDO " + tree.root.saldo);
                 else
-                    System.out.println(cartao + " SALDO " + no.saldo);
+                    System.out.println(cartao + " INEXISTENTE");
             }
             else if (comando.equals("REMOVE")){
                 cartao = new String(st.nextToken());
@@ -247,6 +273,7 @@ public class tp1d{
             }
             else if (comando.equals("IMPRIME")){
                 tree.printInOrder();
+                System.out.println(tree.root);
             }
             else if (comando.equals("TERMINA")){
                 return;

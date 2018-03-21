@@ -1,3 +1,4 @@
+import javax.xml.bind.SchemaOutputResolver;
 import java.io.IOException;
 import java.util.StringTokenizer;
 import java.text.NumberFormat;
@@ -94,6 +95,7 @@ class BST {
         root = splay(root, cartao);
 
         if(root.compareTo(cartao)==0){
+            newNode = root;
             root.saldo += valor;
         }
         else if(root.compareTo(cartao) < 0){
@@ -115,12 +117,8 @@ class BST {
     }
 
     // remove contribuinte da arvore
-    public void remove(Node no) {
-        remove(no.cartao);
-    }
-
-    public void remove(String cartao){
-        root = remove(cartao, root);
+    public Node remove(String cartao){
+        return remove(cartao, root);
     }
 
     protected Node remove(String cartao, Node no) {
@@ -182,23 +180,34 @@ class BST {
         return temp;
     }
 
-    public Node splay(Node root,String cartao){
+    public Node splay(Node root,String cartao){ //Caso especial se for SALDO?
 
-        if(root == null || root.compareTo(cartao)==0) return root;
+        boolean hasChanged = true;
+        Node temp=null;
+
+        if(root == null || root.compareTo(cartao)==0) return null;
 
         if(root.compareTo(cartao) > 0){ //Chave é menor
-            if(root.left == null) return root; //Nao existe
+            if(root.left == null) return null; //Nao existe
 
             if(root.left.compareTo(cartao) > 0){
                 if(root.left.left != null){
-                    root.left.left = splay(root.left.left, cartao);
-                    root = RightRotation(root);
+                    temp = splay(root.left.left, cartao);
+                    if(temp != null){
+                        root.left.left = temp;
+                        root = RightRotation(root);
+                    }
+                    else hasChanged = false;
                 }
             }
             else if(root.left.compareTo(cartao) < 0){
                 if(root.left.right != null){
-                    root.left.right = splay(root.left.right, cartao);
-                    root.left = LeftRotation(root.left);
+                    temp = splay(root.left.right, cartao);
+                    if(temp != null){
+                        root.left.right = temp;
+                        root.left = LeftRotation(root.left);
+                    }
+                    else hasChanged = false;
                 }
             }
             else{
@@ -206,21 +215,29 @@ class BST {
                 return RightRotation(root);
             }
 
-            return RightRotation(root);
+            return hasChanged?RightRotation(root):root;
         }
         else{
             if(root.right == null) return root;
 
             if(root.right.compareTo(cartao) < 0){
                 if(root.right.right != null){
-                    root.right.right = splay(root.right.right, cartao);
-                    root = LeftRotation(root);
+                    temp = splay(root.right.right, cartao);
+                    if(temp != null){
+                        root.right.right = temp;
+                        root = LeftRotation(root);
+                    }
+                    else hasChanged = false;
                 }
             }
             else if(root.right.compareTo(cartao) > 0){
                 if(root.right.left != null){
                     root.right.left = splay(root.right.left, cartao);
-                    root.right = RightRotation(root.right);
+                    if(temp != null){
+                        root.right.left = temp;
+                        root.right = RightRotation(root.right);
+                    }
+                    else hasChanged = false;
                 }
             }
             else{
@@ -228,7 +245,7 @@ class BST {
                 return LeftRotation(root);
             }
 
-            return LeftRotation(root);
+            return hasChanged?LeftRotation(root):root;
         }
     }
 }
@@ -260,16 +277,20 @@ public class tp1e{
                 if(tree==null || tree.root==null){
                     System.out.println(cartao + " INEXISTENTE");
                 }
-                Node oldRoot = tree.root;
-                tree.root = tree.get(tree.root, cartao);
-                if(oldRoot!=tree.root || tree.root.compareTo(cartao)==0)
-                    System.out.println(cartao + " SALDO " + tree.root.saldo);
-                else
-                    System.out.println(cartao + " INEXISTENTE");
+                else{
+                    Node oldRoot = tree.root;
+                    tree.root = tree.get(tree.root, cartao);
+                    if(oldRoot!=tree.root || tree.root.compareTo(cartao)==0){
+                        System.out.println(oldRoot!=tree.root?"Root has changed":"Root hasnt changed");
+                        System.out.println(cartao + " SALDO " + tree.root.saldo);
+                    }
+                    else
+                        System.out.println(cartao + " INEXISTENTE");
+                }
             }
             else if (comando.equals("REMOVE")){
                 cartao = new String(st.nextToken());
-                tree.remove(cartao);
+                tree.root = tree.remove(cartao);
             }
             else if (comando.equals("IMPRIME")){
                 tree.printInOrder();

@@ -1,2 +1,2 @@
 # tp1bcde
-Tarefa A e B do TP1 de Algoritmos e Estruturas de Dados [AED]
+Tarefa A, B, D e E do TP1 de Algoritmos e Estruturas de Dados [AED]
